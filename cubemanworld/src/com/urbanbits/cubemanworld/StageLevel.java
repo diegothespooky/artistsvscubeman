@@ -24,9 +24,9 @@ public class StageLevel {
 	
 	
 	public void loadPlatform(){
-		bmpPlatform =  BitmapFactory.decodeResource(context.getResources(), R.drawable.platform32);
-		intStartX = 104;
-		intStartY = 20;
+		bmpPlatform =  BitmapFactory.decodeResource(context.getResources(), R.drawable.platform25);
+		intStartX = 160;
+		intStartY = 112;
 	}
 	
 	public Bitmap getPlatform(){
