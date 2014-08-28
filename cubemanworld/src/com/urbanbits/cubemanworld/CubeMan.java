@@ -1,37 +1,35 @@
 package com.urbanbits.cubemanworld;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
-public class Character extends GameEntity {
-	
-	Context context;
-	
-	//border color 101008
-	//shadow color 1a1a1a
-	
-	protected int intMoving; /*     0
-								   3.1 
-								   2     */
+public class CubeMan extends GameEntity {
+    
 	protected int intMovingPhase = 0;
-
-
-	public Character(){
-		
+	
+	public CubeMan (Context context,int intStartX, int intStartY, int intColor){
+		intWidth = 16;
+		intHeight = 32;
+		intX = intStartX;
+		intY = intStartY;
+		intX2 = intStartX+intWidth*GameItemSizes.sizeMultiplicator;
+		intY2 = intStartY+intHeight*GameItemSizes.sizeMultiplicator;
+		bmpSprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.cubeman);
+		rectActual = new Rect(intWidth,intHeight,intWidth+intWidth,intHeight+intHeight);
+		rectLayout = new Rect(intX,intY,intX2,intY2);
 	}
 	
-	public Character(Context context,int intWidth,int intHeight,int startX, int startY,boolean premade){
-		this.intWidth = 16;
-		this.intHeight = 32;
-		intX = startX;
-		intY = startY;
-		intX2 = startX+16*GameItemSizes.sizeMultiplicator;
-		intY2 = startY+32*GameItemSizes.sizeMultiplicator;
-		bmpSprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.dodofinal);
-		rectActual = new Rect(16,32,16+16,32+32);
-		rectLayout = new Rect(intX,intY,intX2,intY2);
+	@Override
+	public Rect getRectActual() {
+		// TODO Auto-generated method stub
+		return rectActual;
+	}
+
+	@Override
+	public Rect getRectLayout() {
+		// TODO Auto-generated method stub
+		return rectLayout;
 	}
 	
 	int targetX;
@@ -42,19 +40,10 @@ public class Character extends GameEntity {
 	int intDirectionX;
 	int intDirectionY;
 	
-	int intStepX;
-	int intStepY;
 	
 	int intAddX;
 	int intAddY;
-	
-	
-	float floatDeltaError;
-	float floatError;
-	
-	boolean isLowPendant;
-	boolean isNinetyDegrees;
-	
+
 	public void resetPath(){
 		setPath(targetX,targetY);		
 	}
@@ -69,28 +58,8 @@ public class Character extends GameEntity {
 		intDirectionX = (int)Math.signum(intGoingRight);
 		intDirectionY = (int)Math.signum(intGoingDown);
 		
-		intStepX = intDirectionX*GameItemSizes.playerStepSize;
-		intStepY = intDirectionY*GameItemSizes.playerStepSize;
-		
-		int intDeltaX = Math.abs(intGoingRight);
-		int intDeltaY = Math.abs(intGoingDown);
-		isLowPendant = (intDeltaX > intDeltaY);
-		isNinetyDegrees = (intDeltaX == intDeltaY);
-		floatError = 0;
-		if(isNinetyDegrees){
-			floatDeltaError=0;
-			intAddX = intStepX;
-			intAddY = intStepY;
-		} else if(isLowPendant){
-			floatDeltaError = (float)intDeltaY/intDeltaX;
-			intAddX = intStepX;
-			intAddY = 0;
-		} else {
-			floatDeltaError = (float)intDeltaX/intDeltaY;
-			intAddY = intStepY;
-			intAddX = 0;
-		}
-		
+		intAddX = intDirectionX*GameItemSizes.playerStepSize;
+		intAddY = intDirectionY*GameItemSizes.playerStepSize;
 		
 	}
 	
@@ -104,28 +73,6 @@ public class Character extends GameEntity {
 		
 		rectActual.set(intLayoutX1,intLayoutY1,intLayoutX2,intLayoutY2);
 	
-		
-		if(intDirectionX !=0 && intDirectionY !=0){
-			floatError += floatDeltaError;
-			if(isLowPendant){
-				if(floatError>=0.5){
-					intAddY = intStepY;
-					floatError -= 1;
-				} else {
-					intAddY = 0;
-				}
-			} else {
-				intAddY = intStepY;
-				if(floatError>=0.5){
-					intAddX = intStepX;
-					floatError -= 1;
-				} else {
-					intAddX = 0;
-				} 
-			}
-			
-		}
-		
 		intX += intAddX;
 		intY += intAddY;
 		intX2 = intX+intWidth*GameItemSizes.sizeMultiplicator;
@@ -149,7 +96,5 @@ public class Character extends GameEntity {
 		
 		return true;
 	}
-	
-	
-	
+
 }

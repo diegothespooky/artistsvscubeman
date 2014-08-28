@@ -2,12 +2,12 @@ package com.urbanbits.cubemanworld;
 
 public class ActionMove extends Action{
 
-	Character target;
+	GameEntity target;
 	int toX;
 	int toY;
 	
 
-	public ActionMove(Character target, int toX, int toY) {
+	public ActionMove(GameEntity target, int toX, int toY) {
 		super();
 		this.target = target;
 		this.toX = toX;
@@ -22,9 +22,5 @@ public class ActionMove extends Action{
 		};
 	}
 	
-	
-	
 
-	
-	
 }

@@ -3,6 +3,7 @@ package com.urbanbits.cubemanworld;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Canvas;
 
 public class StageEntityManager {
 	
@@ -16,6 +17,7 @@ public class StageEntityManager {
 	Action actionPlayer1;
 	Action actionPlayer2;
 	
+	ArrayList<GameEntity> mobs = new ArrayList<GameEntity>();
 	
 	ArrayList<Action> actionStack;
 	//ArrayList<Action> nextStack;
@@ -32,34 +34,39 @@ public class StageEntityManager {
 		player1 = new Character(context,gameItemSizes.intCharWidth,gameItemSizes.intCharHeight,stageLevel.getStartPositonX(),stageLevel.getStartPositionY(),true);
 	}
 
+	public void spawnCubeMan(){
+		CubeMan cubeMan = new CubeMan(context,gameItemSizes.stageEntityPosition[0][1][0],gameItemSizes.stageEntityPosition[0][1][1],0);
+		mobs.add(cubeMan);
+		ActionMove startWalkingCubeMan = new ActionMove(cubeMan,cubeMan.intX-64,cubeMan.intY+32);
+		actionStack.add(startWalkingCubeMan);
+		
+		//-64,+32
+	}
 	
 	public void solveStack(){
 		for(Action action : actionStack){
-			action.execute();
+			if(!action.hasFinished){
+				action.execute();
+			} else {
+				actionStack.remove(action);
+			}
 		}
-	}
-
-	public void solveReactions(){
-		player1.updateLayout();
-		//player2.updateLayout();
-		
-		actionStack.clear();
-		
-		//modify for: n players, priority turn
-		if(actionPlayer1 != null){
+		if(actionPlayer1!=null){
 			if(!actionPlayer1.hasFinished){
-				actionStack.add(actionPlayer1);
-			}else{
+				actionPlayer1.execute();
+			} else {
 				actionPlayer1 = null;
 			}
 		}
-		if(actionPlayer2 != null){
-			if(!actionPlayer2.hasFinished){
-				actionStack.add(actionPlayer2);
-			}else{
-				actionPlayer2 = null;
-			}
-		}
+		
+	}
+
+	public void solveReactions(){
+		//this could be in the draw method for
+		player1.updateLayout();
+		for(GameEntity mob : mobs){
+			mob.updateLayout();
+		} 
 	}
 
 	public void movePlayer1(int eventX, int eventY) {
@@ -74,6 +81,13 @@ public class StageEntityManager {
 	    player1.resetPath();
 		
 	}
+
+	public void drawEntities(Canvas canvas, int canvasWidth, int canvasHeight) {
+		canvas.drawBitmap(player1.getBitmap(),player1.rectActual,player1.getRectLayout(),null);
+		for(GameEntity mob : mobs){
+			canvas.drawBitmap(mob.getBitmap(), mob.rectActual, mob.getRectLayout(),null);
+		} 
+    }
 
 	
 }

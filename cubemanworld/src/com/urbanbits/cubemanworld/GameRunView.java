@@ -17,6 +17,7 @@ public class GameRunView  extends SurfaceView implements SurfaceHolder.Callback,
 	  GameItemSizes gameItemSizes;
 	  Character chrPlayer;
 	  StageEntityManager stageEntityManager;
+	  double actualFrame;
 	  
 	  int canvasHeight;
 	  int canvasWidth;
@@ -47,16 +48,15 @@ public class GameRunView  extends SurfaceView implements SurfaceHolder.Callback,
 	        
 	        @Override
 	        public void run() {
-	            Canvas canvas;
-	            stageLevel = new StageLevel(context);
-			    gameItemSizes = new GameItemSizes(canvasHeight,canvasWidth);
-			    stageEntityManager = new StageEntityManager(context, stageLevel,gameItemSizes);
+	        	Canvas canvas;
+	            gameItemSizes = new GameItemSizes(canvasHeight,canvasWidth);
+	            stageLevel = new StageLevel(context,gameItemSizes);
+	            stageEntityManager = new StageEntityManager(context, stageLevel,gameItemSizes);
 	            
 	            stageLevel.loadPlatform();
 	            stageEntityManager.setTestEntities();
 	            
-	            Paint myPaint = new Paint();
-	            myPaint.setColor(Color.rgb(0, 0, 0));
+
 	            
 	            while (this.runFlag) {
 	             
@@ -68,16 +68,20 @@ public class GameRunView  extends SurfaceView implements SurfaceHolder.Callback,
 	                canvas = null;
 	                
 	                try {
-	                   
+	                    
+	                	if(actualFrame==30){
+	                		stageEntityManager.spawnCubeMan();
+	                		System.out.println("Cube spawned");
+	                	}
+	                	
 	                    canvas = this.surfaceHolder.lockCanvas(null);
 	                    synchronized (this.surfaceHolder) {
 	                    	
 	                    	stageEntityManager.solveStack();
 	                    	stageEntityManager.solveReactions();
 	                    	
-	                    	canvas.drawRect(new Rect(0,0,canvasWidth,canvasHeight),myPaint);
-	                    	canvas.drawBitmap(stageLevel.getPlatform(),null,gameItemSizes.getRectStage(),null);
-	                    	canvas.drawBitmap(stageEntityManager.player1.getBitmap(),stageEntityManager.player1.rectActual,stageEntityManager.player1.getRectLayout(),null);
+	                    	stageLevel.drawStage(canvas,gameItemSizes);
+	                    	stageEntityManager.drawEntities(canvas,canvasWidth,canvasHeight);
 	                    		                    	
 	                    }
 	                } finally {
@@ -87,6 +91,7 @@ public class GameRunView  extends SurfaceView implements SurfaceHolder.Callback,
 	                    }
 	                }
 	                try {
+	                	actualFrame++;
 						sleep(25);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
