@@ -1,5 +1,8 @@
 package com.urbanbits.cubemanworld;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
@@ -42,7 +45,7 @@ public abstract class GameEntity {
 	int intX2;
 	int intY2;
 	
-	
+		
 	Bitmap bmpSprite;
 	
 	Rect rectActual;
@@ -84,5 +87,14 @@ public abstract class GameEntity {
 	
 	public abstract void setPath(int toX, int toY);
 	public abstract boolean move();
+	
+	public static class YComparator implements Comparator<GameEntity>{
+	    public int compare(GameEntity e1, GameEntity e2) {
+	        return e1.intY-e2.intY;
+	    }
+	}
+	
+	public ArrayList<Action> actions = new ArrayList<Action>();
+	
 	
 }

@@ -69,7 +69,7 @@ public class GameRunView  extends SurfaceView implements SurfaceHolder.Callback,
 	                
 	                try {
 	                    
-	                	if(actualFrame==30){
+	                	if(actualFrame%60==0){
 	                		stageEntityManager.spawnCubeMan();
 	                		System.out.println("Cube spawned");
 	                	}

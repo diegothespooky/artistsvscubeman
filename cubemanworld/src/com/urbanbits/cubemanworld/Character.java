@@ -17,6 +17,10 @@ public class Character extends GameEntity {
 								   2     */
 	protected int intMovingPhase = 0;
 
+	
+	public boolean isMoving;
+	public boolean isPainting;
+	
 
 	public Character(){
 		
@@ -55,9 +59,6 @@ public class Character extends GameEntity {
 	boolean isLowPendant;
 	boolean isNinetyDegrees;
 	
-	public void resetPath(){
-		setPath(targetX,targetY);		
-	}
 	
 	public void setPath(int toX, int toY) {
 		targetX = toX;
@@ -91,7 +92,7 @@ public class Character extends GameEntity {
 			intAddX = 0;
 		}
 		
-		
+		isMoving = true;
 	}
 	
 	int intMovinPhases[] = {0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3}; 
@@ -137,17 +138,22 @@ public class Character extends GameEntity {
 		}
 		
 		if(targetX == intX && targetY == intY){
-			intMovingPhase = 4;
-			intLayoutX1 = intMovingIndex[intDirectionX+1][intDirectionY+1][intMovinPhases[intMovingPhase]][0];
-			intLayoutY1 = intMovingIndex[intDirectionX+1][intDirectionY+1][intMovinPhases[intMovingPhase]][1];
-			intLayoutX2 = intLayoutX1+intWidth;
-			intLayoutY2 = intLayoutY1+intHeight;
-			
-			rectActual.set(intLayoutX1,intLayoutY1,intLayoutX2,intLayoutY2);
+			stopMoving();
 			return false;
 		}
 		
 		return true;
+	}
+	
+	public void stopMoving(){
+		intMovingPhase = 4;
+		int intLayoutX1 = intMovingIndex[intDirectionX+1][intDirectionY+1][intMovinPhases[intMovingPhase]][0];
+		int intLayoutY1 = intMovingIndex[intDirectionX+1][intDirectionY+1][intMovinPhases[intMovingPhase]][1];
+		int intLayoutX2 = intLayoutX1+intWidth;
+		int intLayoutY2 = intLayoutY1+intHeight;
+		
+		rectActual.set(intLayoutX1,intLayoutY1,intLayoutX2,intLayoutY2);
+		isMoving = false;
 	}
 	
 	

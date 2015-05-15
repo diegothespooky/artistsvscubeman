@@ -54,8 +54,8 @@ public class GameItemSizes {
 			for(int j=0; j<5; j++){
 				stageCellCoords[i][j][0] = (realCellCoords[i][j][0]*sizeMultiplicator)+intStageX;
 				stageCellCoords[i][j][1] = (realCellCoords[i][j][1]*sizeMultiplicator)+intStageY;
-				stageEntityPosition[i][j][0] = stageCellCoords[i][j][0]-8*GameItemSizes.sizeMultiplicator;;
-				stageEntityPosition[i][j][1] = stageCellCoords[i][j][1]-28*GameItemSizes.sizeMultiplicator;;
+				stageEntityPosition[i][j][0] = stageCellCoords[i][j][0]-7*GameItemSizes.sizeMultiplicator;;
+				stageEntityPosition[i][j][1] = stageCellCoords[i][j][1]-27*GameItemSizes.sizeMultiplicator;;
 			}
 		}
 	}
